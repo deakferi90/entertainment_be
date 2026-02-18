@@ -1,32 +1,31 @@
-const express = require("express");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import mediaRoutes from "./routes/mediaRoutes.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = 9000;
+
+// Middleware
 app.use(express.json());
+app.use(cors());
 
-app.get("/", (req, res) => {
-  res.status(200);
-  res.send("Welcome to root URL of Server");
+// MongoDB Connection
+mongoose.connect("mongodb://127.0.0.1:27017/entertainment", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-app.get("/hello", (req, res) => {
-  res.set("Content-Type", "text/html");
-  res.status(200).send("<h1>Hello GFG Learner!</h1>");
-});
+mongoose.connection.on("connected", () => console.log("MongoDB connected"));
+mongoose.connection.on("error", (err) => console.log("MongoDB error:", err));
 
-app.post("/", (req, res) => {
-  const { name } = req.body;
+// Routes
+app.use("/api/media", mediaRoutes);
 
-  res.send(`Welcome ${name}`);
-  console.log(name);
-});
+// Root
+app.get("/", (req, res) => res.send("API running"));
 
-app.get("/favicon.ico", (req, res) => res.status(204));
+// Favicon
+app.get("/favicon.ico", (req, res) => res.status(204).send());
 
-app.listen(PORT, (error) => {
-  if (!error)
-    console.log(
-      "Server is Successfully Running, and App is listening on port " + PORT,
-    );
-  else console.log("Error occurred, server can't start", error);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
