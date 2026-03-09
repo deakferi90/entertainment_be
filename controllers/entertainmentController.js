@@ -1,6 +1,5 @@
 const Entertainment = require("../models/Entertainment");
 
-// GET ALL
 const getAll = async (req, res) => {
   try {
     const data = await Entertainment.find();
@@ -10,7 +9,6 @@ const getAll = async (req, res) => {
   }
 };
 
-// CREATE ITEM
 const createItem = async (req, res) => {
   try {
     const item = await Entertainment.create(req.body);
@@ -20,7 +18,6 @@ const createItem = async (req, res) => {
   }
 };
 
-// GET TRENDING
 const getTrending = async (req, res) => {
   try {
     const data = await Entertainment.find({ isTrending: true });
@@ -30,7 +27,6 @@ const getTrending = async (req, res) => {
   }
 };
 
-// SEARCH
 const search = async (req, res) => {
   try {
     const { query } = req.query;
