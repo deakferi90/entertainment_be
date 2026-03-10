@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const thumbnailSchema = new mongoose.Schema(
   {
@@ -21,4 +21,6 @@ const entertainmentSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Entertainment", entertainmentSchema);
+const Entertainment = mongoose.model("Entertainment", entertainmentSchema);
+
+export default Entertainment;

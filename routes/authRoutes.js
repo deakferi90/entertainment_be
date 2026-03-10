@@ -1,6 +1,7 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js";
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -9,19 +10,35 @@ const users = [];
 const SECRET = "mysecretkey";
 
 router.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const email = req.body?.email?.trim().toLowerCase();
+    const password = req.body?.password;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "username, email, and password are required" });
+    }
 
-  const user = {
-    id: Date.now(),
-    email,
-    password: hashedPassword,
-  };
+    const hashedPassword = await hash(password, 10);
+    const newUser = await User.create({
+      email,
+      password: hashedPassword,
+    });
 
-  users.push(user);
-
-  res.json({ message: "User created" });
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: newUser._id,
+        email: newUser.email,
+      },
+    });
+  } catch (err) {
+    if (err?.code === 11000) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+    return res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 router.post("/login", async (req, res) => {
@@ -46,4 +63,4 @@ router.post("/login", async (req, res) => {
   res.json({ token });
 });
 
-module.exports = router;
+export default router;
