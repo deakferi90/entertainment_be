@@ -17,7 +17,7 @@ app.use("/api", authRoutes);
 
 app.get("/", (req, res) => res.send("MongoDB API Running"));
 
-app.use("/api/entertainment", entertainmentRoutes);
+app.use("/api", entertainmentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
