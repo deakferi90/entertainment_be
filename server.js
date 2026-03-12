@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import entertainmentRoutes from "./routes/entertainment.js";
 
 dotenv.config();
 connectDB();
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use("/api", authRoutes);
 
 app.get("/", (req, res) => res.send("MongoDB API Running"));
+
+app.use("/api/entertainment", entertainmentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

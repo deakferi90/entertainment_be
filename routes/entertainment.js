@@ -1,14 +1,13 @@
 import express from "express";
-const router = express.Router();
-import Entertainment from "../models/Entertainment.js";
+import * as entertainmentController from "../controllers/entertainmentController.js";
 
-router.get("/", async (req, res) => {
-  try {
-    const items = await Entertainment.find();
-    res.json(items);
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error });
-  }
-});
+const router = express.Router();
+
+router.get("/", entertainmentController.getAll);
+router.get("/trending", entertainmentController.getTrending);
+router.get("/movies", entertainmentController.getMovies);
+router.get("/tv", entertainmentController.getTVSeries);
+router.get("/bookmarks", entertainmentController.getBookmarks);
+router.get("/search", entertainmentController.search);
 
 export default router;

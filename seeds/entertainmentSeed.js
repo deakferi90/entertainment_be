@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const Entertainment = require("../models/Entertainment");
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import Entertainment from "../models/Entertainment.js";
 
 dotenv.config();
 

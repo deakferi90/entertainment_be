@@ -1,6 +1,6 @@
-const Entertainment = require("../models/Entertainment");
+import Entertainment from "../models/Entertainment.js";
 
-const getAll = async (req, res) => {
+export const getAll = async (req, res) => {
   try {
     const data = await Entertainment.find();
     res.json(data);
@@ -9,16 +9,7 @@ const getAll = async (req, res) => {
   }
 };
 
-const createItem = async (req, res) => {
-  try {
-    const item = await Entertainment.create(req.body);
-    res.status(201).json(item);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-const getTrending = async (req, res) => {
+export const getTrending = async (req, res) => {
   try {
     const data = await Entertainment.find({ isTrending: true });
     res.json(data);
@@ -27,7 +18,34 @@ const getTrending = async (req, res) => {
   }
 };
 
-const search = async (req, res) => {
+export const getMovies = async (req, res) => {
+  try {
+    const data = await Entertainment.find({ category: "Movie" });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getTVSeries = async (req, res) => {
+  try {
+    const data = await Entertainment.find({ category: "TV Series" });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBookmarks = async (req, res) => {
+  try {
+    const data = await Entertainment.find({ isBookmarked: true });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const search = async (req, res) => {
   try {
     const { query } = req.query;
     const results = await Entertainment.find({
@@ -37,11 +55,4 @@ const search = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
-
-module.exports = {
-  getAll,
-  createItem,
-  getTrending,
-  search,
 };
